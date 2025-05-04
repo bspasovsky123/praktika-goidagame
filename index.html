@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Учебная практика</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Светлая тема (по умолчанию) */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+    header {
+      background-color: #0057b7;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #e9ecef;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #0057b7;
+      font-weight: bold;
+      padding: 5px 10px;
+      border: 1px solid #0057b7;
+      border-radius: 5px;
+    }
+
+    nav a:hover {
+      background-color: #0057b7;
+      color: white;
+    }
+
+    section {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: white;
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+      color: #777;
+    }
+
+    button {
+      padding: 8px;
+      margin-top: 10px;
+    }
+
+    /* Тёмная тема */
+    .dark {
+      background-color: #121212;
+      color: #eee;
+    }
+
+    .dark section {
+      background-color: #1e1e1e;
+    }
+
+    .dark nav {
+      background-color: #333;
+    }
+
+    .dark nav a {
+      color: #eee;
+      border-color: #eee;
+    }
+
+    .dark nav a:hover {
+      background-color: #eee;
+      color: #333;
+    }
+
+    .dark button {
+      background-color: #444;
+      color: #eee;
+      border: 1px solid #aaa;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Учебная практика</h1>
+  <p>Разработка веб-приложения</p>
+</header>
+
+<nav>
+  <a href="#intro">Введение</a>
+  <a href="#tasks">Темы</a>
+  <a href="dinogame.html">🎮 Динозаврик</a>
+  <a href="#student">О студенте</a>
+  <button onclick="toggleTheme()">🌙 Тема</button> <!-- Кнопка смены темы -->
+</nav>
+
+<section id="intro">
+  <h2>Введение</h2>
+  <p>Этот сайт создан в рамках учебной практики с целью отработки навыков веб-разработки и публикации на GitHub Pages.</p>
+</section>
+
+<section id="tasks">
+  <h2>Темы практики</h2>
+  <ol>
+    <li>Инспектирование компонентов ПО</li>
+    <li>Разработка технического задания</li>
+    <li>Разработка веб-приложения</li>
+    <li>Создание интерфейса пользователя</li>
+    <li>Техническое сопровождение</li>
+    <li>Тестирование</li>
+    <li>Размещение сайта в сети</li>
+  </ol>
+</section>
+
+<section id="game">
+  <h2>Мини-игра: Угадай число</h2>
+  <p>Я загадал число от 1 до 100. Попробуй угадать!</p>
+  <input type="number" id="guess" placeholder="Твоя догадка">
+  <button onclick="checkGuess()">Проверить</button>
+  <p id="feedback"></p>
+
+  <script>
+    const secretNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+
+    function checkGuess() {
+      const userGuess = parseInt(document.getElementById('guess').value);
+      attempts++;
+      const feedback = document.getElementById('feedback');
+
+      if (userGuess === secretNumber) {
+        feedback.textContent = `Поздравляем! Ты угадал число ${secretNumber} за ${attempts} попыток.`;
+        feedback.style.color = "green";
+      } else if (userGuess < secretNumber) {
+        feedback.textContent = "Слишком мало. Попробуй больше!";
+        feedback.style.color = "blue";
+      } else {
+        feedback.textContent = "Слишком много. Попробуй меньше!";
+        feedback.style.color = "blue";
+      }
+    }
+  </script>
+</section>
+
+<section id="student">
+  <h2>О студенте</h2>
+  <p><strong>ФИО:</strong> Спасовский Богдан Русланович</p>
+  <p><strong>Группа:</strong> ИСиПо9-21</p>
+  <p><strong>Год:</strong> 2025</p>
+</section>
+
+<footer>
+  © 2025 Учебная практика ТЭК
+</footer>
+
+<script>
+  // Функция смены темы
+  function toggleTheme() {
+    document.body.classList.toggle("dark"); // Добавляем/удаляем класс "dark" у body
+  }
+</script>
+
+</body>
+</html>

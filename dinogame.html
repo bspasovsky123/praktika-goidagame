@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Игра Динозаврик</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: white;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background-color: #f4f4f4;
+      border: 2px solid #333;
+    }
+  </style>
+</head>
+<body>
+<canvas id="game" width="800" height="200"></canvas>
+
+<script>
+  const canvas = document.getElementById("game");
+  const ctx = canvas.getContext("2d");
+
+  const dinoImg = new Image();
+  dinoImg.src = "dino.png";
+
+  let dino = {
+    x: 50,
+    y: 0, // будет вычислено после загрузки изображения
+    width: 50,
+    height: 75,
+    vy: 0,
+    gravity: 1.5,
+    jumpForce: -18,
+    isJumping: false
+  };
+
+  let cactus = {
+    x: 800,
+    y: 160,
+    width: 20,
+    height: 40,
+    speed: 8
+  };
+
+  let score = 0;
+  let gameOver = false;
+
+  const jumpSound = new Audio("https://www.myinstants.com/media/sounds/goida.mp3");
+
+  document.addEventListener("keydown", function (e) {
+    if (e.code === "Space" || e.code === "ArrowUp") {
+      if (!dino.isJumping && !gameOver) {
+        dino.vy = dino.jumpForce;
+        dino.isJumping = true;
+        jumpSound.currentTime = 0;
+        jumpSound.play();
+      }
+      if (gameOver) restartGame();
+    }
+  });
+
+  function update() {
+    if (gameOver) return;
+
+    const groundY = canvas.height - dino.height;
+
+    dino.vy += dino.gravity;
+    dino.y += dino.vy;
+
+    if (dino.y >= groundY) {
+      dino.y = groundY;
+      dino.vy = 0;
+      dino.isJumping = false;
+    }
+
+    cactus.x -= cactus.speed;
+
+    if (cactus.x < -cactus.width) {
+      cactus.x = 800 + Math.random() * 300;
+      score++;
+    }
+
+    if (
+      dino.x < cactus.x + cactus.width &&
+      dino.x + dino.width > cactus.x &&
+      dino.y < cactus.y + cactus.height &&
+      dino.y + dino.height > cactus.y
+    ) {
+      gameOver = true;
+    }
+
+    draw();
+    requestAnimationFrame(update);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.drawImage(dinoImg, dino.x, dino.y, dino.width, dino.height);
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(cactus.x, cactus.y, cactus.width, cactus.height);
+
+    ctx.fillStyle = "#333";
+    ctx.font = "20px Arial";
+    ctx.fillText("Очки: " + score, 10, 30);
+
+    if (gameOver) {
+      ctx.fillStyle = "red";
+      ctx.font = "25px Arial";
+      ctx.fillText("Игра окончена! Нажми пробел, чтобы начать заново.", 90, 80);
+    }
+  }
+
+  function restartGame() {
+    dino.y = canvas.height - dino.height;
+    dino.vy = 0;
+    cactus.x = 800;
+    score = 0;
+    gameOver = false;
+    update();
+  }
+
+  dinoImg.onload = function () {
+    dino.y = canvas.height - dino.height;
+    update();
+  };
+</script>
+</body>
+</html>
